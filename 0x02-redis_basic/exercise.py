@@ -15,7 +15,10 @@ class Cache:
     def store(self, data: Union[str, bytes, int, float]) -> str:
         """store unique id and return key"""
         key = str(uuid.uuid4())
-        self._redis.set(key, data)
+        if isinstance(data, str):
+            self._redis.set(key, data.encode("utf-8"))
+        else:
+            self._redis.set(key, data)
         return key
 
     def get(self,
